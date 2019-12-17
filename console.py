@@ -1,16 +1,17 @@
 #!/usr/bin/python3
 """This is the console for AirBnB"""
-import cmd
-from models import storage
-from datetime import datetime
 from models.base_model import BaseModel
-from models.user import User
-from models.state import State
-from models.city import City
 from models.amenity import Amenity
-from models.place import Place
 from models.review import Review
-from shlex import split
+from models.place import Place
+from models.state import State
+from datetime import datetime
+from models.user import User
+from models.city import City
+from models import storage
+from shlex import shlex
+import cmd
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -41,10 +42,22 @@ class HBNBCommand(cmd.Cmd):
         try:
             if not line:
                 raise SyntaxError()
-            obj = eval("{}({})".format(line.split(" ")[0], ', '.join(
-                [key_val for key_val in line.split(" ")[1:]])))
+
+            command, *my_list = line.split(' ')
+            args = []
+
+            line = list(shlex(' '.join(my_list)))
+
+            for offset in range(0, len(line) // 3):
+                offset = offset * 3
+
+                args.append(''.join(line[offset:offset + 3]))
+
+            obj = eval("{}({})".format(command, ', '.join(args)))
             obj.save()
+
             print("{}".format(obj.id))
+
         except SyntaxError:
             print("** class name missing **")
         except NameError:
