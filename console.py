@@ -9,7 +9,7 @@ from datetime import datetime
 from models.user import User
 from models.city import City
 from models import storage
-from shlex import shlex
+import shlex
 import cmd
 import re
 
@@ -44,14 +44,13 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
 
             command, *my_list = line.split(' ')
+            line = ' '.join(my_list)
+            line = shlex.split(line)
             args = []
 
-            line = list(shlex(' '.join(my_list)))
-
-            for offset in range(0, len(line) // 3):
-                offset = offset * 3
-
-                args.append(''.join(line[offset:offset + 3]))
+            for arg in line:
+                key, value = arg.split('=')
+                args.append("{}='{}'".format(key, value.replace('_', ' ')))
 
             obj = eval("{}({})".format(command, ', '.join(args)))
             obj.save()
