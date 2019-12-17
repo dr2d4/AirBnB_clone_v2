@@ -41,7 +41,8 @@ class HBNBCommand(cmd.Cmd):
         try:
             if not line:
                 raise SyntaxError()
-            obj = eval("{}({})".format(line.split(" ")[0], ', '.join([key_val for key_val in line.split(" ")[1:]])))
+            obj = eval("{}({})".format(line.split(" ")[0], ', '.join(
+                [key_val for key_val in line.split(" ")[1:]])))
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
