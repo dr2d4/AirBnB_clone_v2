@@ -11,7 +11,6 @@ from models.city import City
 from models import storage
 import shlex
 import cmd
-import re
 
 
 class HBNBCommand(cmd.Cmd):
