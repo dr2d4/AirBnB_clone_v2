@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """This is the base model class for AirBnB"""
-import uuid
-import models
-from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, String, DateTime
+from datetime import datetime
+import models
+import uuid
 
 Base = declarative_base()
 
@@ -13,9 +13,9 @@ class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
     """
-    id = Column(String(60), primary_key=True, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     update_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    id = Column(String(60), primary_key=True, nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
@@ -42,8 +42,8 @@ class BaseModel:
         Return:
             returns a string of class name, id, and dictionary
         """
-        return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(type(self).__name__, self.id,
+                                     self.__dict__)
 
     def __repr__(self):
         """return a string representaion
@@ -54,6 +54,7 @@ class BaseModel:
         """updates the public instance attribute updated_at to current
         """
         self.updated_at = datetime.now()
+
         # def
         models.storage.new(self)
         models.storage.save()
@@ -74,5 +75,4 @@ class BaseModel:
 
     def delete(self):
         """ Remove current instance of models.storage """
-        del self
-        self.save()
+        pass

@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """This is the user class"""
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from models.place import Place
+from sqlalchemy import Column, String
 from models.review import Review
+from models.place import Place
 
 
 class User(BaseModel, Base):
@@ -15,13 +15,13 @@ class User(BaseModel, Base):
         first_name: first name
         last_name: last name
     """
-    __tablename__ = 'users'
 
-    email = Column(String(128), nullable=False)
-    password = Column(String(128), nullable=False)
-    first_name = Column(String(128), nullable=True)
-    last_name = Column(String(128), nullable=True)
-    places = relationship("Place", backref="user",
-                          cascade="all, delete, delete-orphan")
     review = relationship("Review", backref="user",
                           cascade="all, delete, delete-orphan")
+    places = relationship("Place", backref="user",
+                          cascade="all, delete, delete-orphan")
+    first_name = Column(String(128), nullable=True)
+    last_name = Column(String(128), nullable=True)
+    password = Column(String(128), nullable=False)
+    email = Column(String(128), nullable=False)
+    __tablename__ = 'users'
