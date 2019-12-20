@@ -1,78 +1,76 @@
 #!/usr/bin/python3
-
+"""test for user"""
 import unittest
 import os
-import pep8
 from models.user import User
 from models.base_model import BaseModel
+import pep8
 
 
 class TestUser(unittest.TestCase):
+    """this will test the User class"""
 
     @classmethod
     def setUpClass(cls):
-        """ Initializes the values """
-        cls.my_user = User()
-        cls.my_user.first_name = "Betty"
-        cls.my_user.last_name = "Holberton"
-        cls.my_user.email = "airbnb@holbertonshool.com"
-        cls.my_user.password = "root"
+        """set up for test"""
+        cls.user = User()
+        cls.user.first_name = "Kevin"
+        cls.user.last_name = "Yook"
+        cls.user.email = "yook00627@gmamil.com"
+        cls.user.password = "secret"
 
     @classmethod
     def teardown(cls):
-        """ Delete the object """
-        del cls.my_user
+        """at the end of the test this will tear it down"""
+        del cls.user
 
     def tearDown(self):
-        """ Delete the file """
+        """teardown"""
         try:
             os.remove("file.json")
-        except:
+        except Exception:
             pass
 
-    def test_style_check(self):
-        """
-        Tests pep8 style
-        """
+    def test_pep8_User(self):
+        """Tests pep8 style"""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(['models/user.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def test_is_subclass(self):
-        """ Look if is child class """
-        self.assertTrue(issubclass(self.my_user.__class__, BaseModel), True)
-
-    def test_checking_for_functions(self):
-        """ Check if there functions """
+    def test_checking_for_docstring_User(self):
+        """checking for docstrings"""
         self.assertIsNotNone(User.__doc__)
 
-    def test_has_attributes(self):
-        """ Look if there atributes called """
-        self.assertTrue('email' in self.my_user.__dict__)
-        self.assertTrue('id' in self.my_user.__dict__)
-        self.assertTrue('created_at' in self.my_user.__dict__)
-        self.assertTrue('updated_at' in self.my_user.__dict__)
-        self.assertTrue('password' in self.my_user.__dict__)
-        self.assertTrue('first_name' in self.my_user.__dict__)
-        self.assertTrue('last_name' in self.my_user.__dict__)
+    def test_attributes_User(self):
+        """chekcing if User have attributes"""
+        self.assertTrue('email' in self.user.__dict__)
+        self.assertTrue('id' in self.user.__dict__)
+        self.assertTrue('created_at' in self.user.__dict__)
+        self.assertTrue('updated_at' in self.user.__dict__)
+        self.assertTrue('password' in self.user.__dict__)
+        self.assertTrue('first_name' in self.user.__dict__)
+        self.assertTrue('last_name' in self.user.__dict__)
 
-    def test_attributes_are_strings(self):
-        """ Look the attributes are strings """
-        self.assertEqual(type(self.my_user.email), str)
-        self.assertEqual(type(self.my_user.password), str)
-        self.assertEqual(type(self.my_user.first_name), str)
-        self.assertEqual(type(self.my_user.first_name), str)
+    def test_is_subclass_User(self):
+        """test if User is subclass of Basemodel"""
+        self.assertTrue(issubclass(self.user.__class__, BaseModel), True)
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
-                     "Is the normal database")
-    def test_save(self):
-        """ Look if store """
-        self.my_user.save()
-        self.assertNotEqual(self.my_user.created_at, self.my_user.updated_at)
+    def test_attribute_types_User(self):
+        """test attribute type for User"""
+        self.assertEqual(type(self.user.email), str)
+        self.assertEqual(type(self.user.password), str)
+        self.assertEqual(type(self.user.first_name), str)
+        self.assertEqual(type(self.user.first_name), str)
 
-    def test_to_dict(self):
-        """ Look if there dict """
-        self.assertEqual('to_dict' in dir(self.my_user), True)
+    def test_save_User(self):
+        """test if the save works"""
+        self.user.save()
+        self.assertNotEqual(self.user.created_at, self.user.updated_at)
+
+    def test_to_dict_User(self):
+        """test if dictionary works"""
+        self.assertEqual('to_dict' in dir(self.user), True)
+
 
 if __name__ == "__main__":
     unittest.main()
