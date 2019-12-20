@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """This is the console for AirBnB"""
+import os
+
 from models.base_model import BaseModel
 from models.amenity import Amenity
 from models.review import Review
@@ -17,8 +19,7 @@ class HBNBCommand(cmd.Cmd):
     """this class is entry point of the command interpreter
     """
     prompt = "(hbnb) "
-    all_classes = {"BaseModel", "User", "State", "City",
-                   "Amenity", "Place", "Review"}
+    all_classes = {"User", "State", "City", "Amenity", "Place", "Review"}
 
     def emptyline(self):
         """Ignores empty spaces"""
@@ -129,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
         Exceptions:
             NameError: when there is no object taht has the name
         """
-        objects = storage.all()
+        objects = storage.all(self.all_classes)
         my_list = []
         if not line:
             for key in objects:
@@ -161,7 +162,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             if not line:
                 raise SyntaxError()
-            my_list = split(line, " ")
+            my_list = shlex.split(line, " ")
             if my_list[0] not in self.all_classes:
                 raise NameError()
             if len(my_list) < 2:
@@ -198,7 +199,7 @@ class HBNBCommand(cmd.Cmd):
         """
         counter = 0
         try:
-            my_list = split(line, " ")
+            my_list = shlex.split(line, " ")
             if my_list[0] not in self.all_classes:
                 raise NameError()
             objects = storage.all()
@@ -217,19 +218,19 @@ class HBNBCommand(cmd.Cmd):
         Return:
             returns string of argumetns
         """
-        new_list = []
-        new_list.append(args[0])
+        new_list = [args[0]]
+
         try:
             my_dict = eval(
-                args[1][args[1].find('{'):args[1].find('}')+1])
+                args[1][args[1].find('{'):args[1].find('}') + 1])
         except Exception:
             my_dict = None
         if isinstance(my_dict, dict):
-            new_str = args[1][args[1].find('(')+1:args[1].find(')')]
+            new_str = args[1][args[1].find('(') + 1:args[1].find(')')]
             new_list.append(((new_str.split(", "))[0]).strip('"'))
             new_list.append(my_dict)
             return new_list
-        new_str = args[1][args[1].find('(')+1:args[1].find(')')]
+        new_str = args[1][args[1].find('(') + 1:args[1].find(')')]
         new_list.append(" ".join(new_str.split(", ")))
         return " ".join(i for i in new_list)
 
@@ -250,7 +251,6 @@ class HBNBCommand(cmd.Cmd):
             elif my_list[1][:6] == "update":
                 args = self.strip_clean(my_list)
                 if isinstance(args, list):
-                    obj = storage.all()
                     key = args[0] + ' ' + args[1]
                     for k, v in args[2].items():
                         self.do_update(key + ' "{}" "{}"'.format(k, v))
