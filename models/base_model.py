@@ -75,4 +75,4 @@ class BaseModel:
 
     def delete(self):
         """ Remove current instance of models.storage """
-        pass
+        models.storage.delete(self)
