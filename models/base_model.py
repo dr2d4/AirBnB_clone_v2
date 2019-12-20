@@ -14,7 +14,7 @@ class BaseModel:
     for other classes
     """
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    update_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     id = Column(String(60), primary_key=True, nullable=False)
 
     def __init__(self, *args, **kwargs):
