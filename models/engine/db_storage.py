@@ -38,6 +38,9 @@ class DBStorage:
         """ return all objects of one or more tables """
         objs = {}
 
+        if cls:
+            cls.remove('BaseModel')
+
         for table in cls:
             for obj in self.__session.query(eval(table)).all():
                 key = obj.__class__.__name__ + '.' + obj.id
