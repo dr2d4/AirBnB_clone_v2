@@ -12,20 +12,23 @@ class TestBaseModel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """setup for the test"""
-        cls.base = BaseModel()
-        cls.base.name = "Kev"
-        cls.base.num = 20
+        cls.base1 = BaseModel()
+        cls.base1.name = "Kev"
+        cls.base1.num = 20
+        cls.mymodel = BaseModel()
+        cls.mymodel.name = "The teacher"
+        cls.mymodel.num = 20
 
     @classmethod
     def teardown(cls):
         """at the end of the test this will tear it down"""
-        del cls.base
+        del cls.base1
 
     def tearDown(self):
         """teardown"""
         try:
             os.remove("file.json")
-        except Exception:
+        except:
             pass
 
     def test_pep8_BaseModel(self):
@@ -42,28 +45,46 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsNotNone(BaseModel.save.__doc__)
         self.assertIsNotNone(BaseModel.to_dict.__doc__)
 
-    def test_method_BaseModel(self):
-        """chekcing if Basemodel have methods"""
+    def test_attributes_BaseModel(self):
+        """chekcing if Basemodel have instance attribute"""
         self.assertTrue(hasattr(BaseModel, "__init__"))
+
+    def test_init(self):
+        """test if the base is an type BaseModel"""
+        self.assertTrue(isinstance(self.base1, BaseModel))
+
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "If is in the normal database, skip")
+    def test_save(self):
+        """ Test the function save of base model """
+        self.base1.save()
+        self.assertNotEqual(self.base1.created_at, self.base1.updated_at)
+
+    def test_id(self):
+        """ Check if is correct the id """
+        self.base1.save()
+        self.mymodel.save()
+        self.assertEqual(self.base1.id, self.base1.id)
+        self.assertNotEqual(self.mymodel.id, self.base1.id)
+
+    def test_to_dict(self):
+        """ Test the dictionary """
+        base1_dict = self.base1.to_dict()
+        self.assertEqual(self.base1.__class__.__name__, 'BaseModel')
+        self.assertIsInstance(base1_dict['created_at'], str)
+        self.assertIsInstance(base1_dict['updated_at'], str)
+
+    def test_attributes_base(self):
+        """ Check is here there attribute """
+        self.assertTrue(hasattr(BaseModel, "__init__"))
+        self.assertTrue(hasattr(BaseModel, "__str__"))
+        self.assertTrue(hasattr(BaseModel, "__repr__"))
+
+    def test_attributes_own(self):
+        """ Check the own functions """
         self.assertTrue(hasattr(BaseModel, "save"))
         self.assertTrue(hasattr(BaseModel, "to_dict"))
-
-    def test_init_BaseModel(self):
-        """test if the base is an type BaseModel"""
-        self.assertTrue(isinstance(self.base, BaseModel))
-
-    def test_save_BaesModel(self):
-        """test if the save works"""
-        self.base.save()
-        self.assertNotEqual(self.base.created_at, self.base.updated_at)
-
-    def test_to_dict_BaseModel(self):
-        """test if dictionary works"""
-        base_dict = self.base.to_dict()
-        self.assertEqual(self.base.__class__.__name__, 'BaseModel')
-        self.assertIsInstance(base_dict['created_at'], str)
-        self.assertIsInstance(base_dict['updated_at'], str)
-
+        self.assertTrue(hasattr(BaseModel, "delete"))
 
 if __name__ == "__main__":
     unittest.main()
