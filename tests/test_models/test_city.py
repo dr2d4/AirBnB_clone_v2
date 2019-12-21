@@ -11,15 +11,18 @@ class TestCity(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """ Initializes the values """
         cls.city1 = City()
         cls.city1.name = "Raleigh"
         cls.city1.state_id = "NC"
 
     @classmethod
     def teardown(cls):
+        """ Delete object """
         del cls.city1
 
     def tearDown(self):
+        """ Remove the file """
         try:
             os.remove("file.json")
         except:
@@ -34,12 +37,15 @@ class TestCity(unittest.TestCase):
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
     def test_is_subclass(self):
+        """ Look if is child class """
         self.assertTrue(issubclass(self.city1.__class__, BaseModel), True)
 
     def test_checking_for_functions(self):
+        """ Loof if the doc is empty """
         self.assertIsNotNone(City.__doc__)
 
     def test_has_attributes(self):
+        """ Look if the attributes are compatibles """
         self.assertTrue('id' in self.city1.__dict__)
         self.assertTrue('created_at' in self.city1.__dict__)
         self.assertTrue('updated_at' in self.city1.__dict__)
@@ -47,15 +53,19 @@ class TestCity(unittest.TestCase):
         self.assertTrue('name' in self.city1.__dict__)
 
     def test_attributes_are_strings(self):
+        """ Look if the attributes are strings """
         self.assertEqual(type(self.city1.name), str)
         self.assertEqual(type(self.city1.state_id), str)
 
-
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "Is the normal database")
     def test_save(self):
+        """ Look if the strings aren't equals """
         self.city1.save()
         self.assertNotEqual(self.city1.created_at, self.city1.updated_at)
 
     def test_to_dict(self):
+        """ Look if there dic """
         self.assertEqual('to_dict' in dir(self.city1), True)
 
 if __name__ == "__main__":

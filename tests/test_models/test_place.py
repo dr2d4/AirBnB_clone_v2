@@ -11,6 +11,7 @@ class TestPlace(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """ Initializes values """
         cls.place1 = Place()
         cls.place1.city_id = "Somewhere in India"
         cls.place1.user_id = "Aladdin"
@@ -26,9 +27,11 @@ class TestPlace(unittest.TestCase):
 
     @classmethod
     def teardown(cls):
+        """ Delete objects """
         del cls.place1
 
     def tearDown(self):
+        """ Delete objects """
         try:
             os.remove("file.json")
         except:
@@ -43,12 +46,15 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
     def test_is_subclass(self):
+        """ Verify if is child class"""
         self.assertTrue(issubclass(self.place1.__class__, BaseModel), True)
 
     def test_checking_for_functions(self):
+        """ Check if is none the doc """
         self.assertIsNotNone(Place.__doc__)
 
     def test_has_attributes(self):
+        """ Look if there attributes """
         self.assertTrue('id' in self.place1.__dict__)
         self.assertTrue('created_at' in self.place1.__dict__)
         self.assertTrue('updated_at' in self.place1.__dict__)
@@ -64,8 +70,8 @@ class TestPlace(unittest.TestCase):
         self.assertTrue('longitude' in self.place1.__dict__)
         self.assertTrue('amenity_ids' in self.place1.__dict__)
 
-
     def test_attributes_are_strings(self):
+        """ Look if the strings """
         self.assertEqual(type(self.place1.city_id), str)
         self.assertEqual(type(self.place1.user_id), str)
         self.assertEqual(type(self.place1.name), str)
@@ -78,12 +84,15 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(type(self.place1.longitude), float)
         self.assertEqual(type(self.place1.amenity_ids), list)
 
-
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "Is db or not")
     def test_save(self):
+        """ Look if the test save """
         self.place1.save()
         self.assertNotEqual(self.place1.created_at, self.place1.updated_at)
 
     def test_to_dict(self):
+        """ Look if the attribute to dict """
         self.assertEqual('to_dict' in dir(self.place1), True)
 
 if __name__ == "__main__":

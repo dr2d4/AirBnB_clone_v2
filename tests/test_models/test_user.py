@@ -11,6 +11,7 @@ class TestUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """ Initializes the values """
         cls.my_user = User()
         cls.my_user.first_name = "Betty"
         cls.my_user.last_name = "Holberton"
@@ -19,9 +20,11 @@ class TestUser(unittest.TestCase):
 
     @classmethod
     def teardown(cls):
+        """ Delete the object """
         del cls.my_user
 
     def tearDown(self):
+        """ Delete the file """
         try:
             os.remove("file.json")
         except:
@@ -36,12 +39,15 @@ class TestUser(unittest.TestCase):
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
     def test_is_subclass(self):
+        """ Look if is child class """
         self.assertTrue(issubclass(self.my_user.__class__, BaseModel), True)
 
     def test_checking_for_functions(self):
+        """ Check if there functions """
         self.assertIsNotNone(User.__doc__)
 
     def test_has_attributes(self):
+        """ Look if there atributes called """
         self.assertTrue('email' in self.my_user.__dict__)
         self.assertTrue('id' in self.my_user.__dict__)
         self.assertTrue('created_at' in self.my_user.__dict__)
@@ -51,16 +57,21 @@ class TestUser(unittest.TestCase):
         self.assertTrue('last_name' in self.my_user.__dict__)
 
     def test_attributes_are_strings(self):
+        """ Look the attributes are strings """
         self.assertEqual(type(self.my_user.email), str)
         self.assertEqual(type(self.my_user.password), str)
         self.assertEqual(type(self.my_user.first_name), str)
         self.assertEqual(type(self.my_user.first_name), str)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "Is the normal database")
     def test_save(self):
+        """ Look if store """
         self.my_user.save()
         self.assertNotEqual(self.my_user.created_at, self.my_user.updated_at)
 
     def test_to_dict(self):
+        """ Look if there dict """
         self.assertEqual('to_dict' in dir(self.my_user), True)
 
 if __name__ == "__main__":

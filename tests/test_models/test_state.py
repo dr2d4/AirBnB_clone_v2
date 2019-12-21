@@ -11,14 +11,17 @@ class TestState(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """ Initializes value """
         cls.state1 = State()
         cls.state1.name = "North_Carolina_AKA_THE_BEST_STATE"
 
     @classmethod
     def teardown(cls):
+        """ Delete the object """
         del cls.state1
 
     def tearDown(self):
+        """ Remove the file """
         try:
             os.remove("file.json")
         except:
@@ -33,25 +36,33 @@ class TestState(unittest.TestCase):
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
     def test_is_subclass(self):
+        """ Is a child class """
         self.assertTrue(issubclass(self.state1.__class__, BaseModel), True)
 
     def test_checking_for_functions(self):
+        """ Verify if is empty """
         self.assertIsNotNone(State.__doc__)
 
     def test_has_attributes(self):
+        """ Verify if there attributes """
         self.assertTrue('id' in self.state1.__dict__)
         self.assertTrue('created_at' in self.state1.__dict__)
         self.assertTrue('updated_at' in self.state1.__dict__)
         self.assertTrue('name' in self.state1.__dict__)
 
     def test_attributes_are_strings(self):
+        """ The attributes are strings """
         self.assertEqual(type(self.state1.name), str)
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                     "Is normal database")
     def test_save(self):
+        """ Store the save """
         self.state1.save()
         self.assertNotEqual(self.state1.created_at, self.state1.updated_at)
 
     def test_to_dict(self):
+        """ Look if in the doc there to_dict """
         self.assertEqual('to_dict' in dir(self.state1), True)
 
 if __name__ == "__main__":
