@@ -16,5 +16,5 @@ echo "<html>
 
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
-sudo sed -i "$ a \location /hbnb_static {\n\talias /data/web_static/current/;\n}\n" /etc/nginx/sites-enabled/default
+sudo sed -i "30i location /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n" /etc/nginx/sites-enabled/default
 sudo service nginx restart
