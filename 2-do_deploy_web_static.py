@@ -16,8 +16,8 @@ def do_deploy(archive_path):
         return False
 
     try:
-        file_ext = (archive_path.split("/")[-1])
-        file = '/data/web_static/releases/'.format(file_ext.split(".")[0])
+        file_ext = archive_path.split("/")[-1]
+        file = '/data/web_static/releases/{}'.format(file_ext.split(".")[0])
         put(archive_path, "/tmp")
 
         run("sudo mkdir -p {}".format(file))
