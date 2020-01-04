@@ -9,6 +9,19 @@ env.hosts = ['35.237.192.177', '35.243.249.129']
 env.user = 'ubuntu'
 
 
+def do_pack():
+    """
+        Create compress file
+    """
+    time_stamp = time.strftime("%Y%m%d%H%M%S")
+    print(time_stamp)
+
+    local("mkdir -p versions")
+    local("tar czvf versions/web_static_{}.tgz web_static/".format(time_stamp))
+
+    return "versions/web_static_{}.tgz".format(time_stamp)
+
+
 def do_deploy(archive_path):
     """
         Deploy server
@@ -34,3 +47,15 @@ def do_deploy(archive_path):
         return True
     except:
         return False
+
+
+def deploy():
+    """
+        Deploy in all servers
+    """
+    try:
+        path = do_pack()
+    except:
+        return False
+
+    return do_deploy(path)
