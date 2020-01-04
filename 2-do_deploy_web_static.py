@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# deploying webservers with Fabric
+# Deploy servers with Fabric
 from fabric.operations import put, run, sudo
 from fabric.api import *
 import os.path
