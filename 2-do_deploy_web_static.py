@@ -5,8 +5,7 @@ from fabric.api import *
 import os.path
 import time
 
-env.hosts = ['66.70.184.233', '34.229.242.92'] -----------------------------------
-# env.use_ssh_config = True
+env.hosts = ['35.237.192.177', '35.243.249.129']
 
 
 def do_deploy(archive_path):
