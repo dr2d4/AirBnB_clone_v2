@@ -11,4 +11,4 @@ def do_pack():
     local("mkdir -p versions")
     local("tar czvf versions/web_static_{}.tgz web_static/".format(time_stamp))
 
-	return("versions/web_static_{}.tgz".format(time_stamp))
+    return("versions/web_static_{}.tgz".format(time_stamp))
