@@ -6,6 +6,7 @@ import os.path
 import time
 
 env.hosts = ['35.237.192.177', '35.243.249.129']
+env.user = 'ubuntu'
 
 
 def do_deploy(archive_path):
@@ -31,6 +32,5 @@ def do_deploy(archive_path):
 
         run("ln -s {} /data/web_static/current".format(file))
         return True
-
     except:
         return False
