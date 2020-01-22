@@ -64,6 +64,7 @@ def tells_even_or_odd(n):
 @app.route('/states_list', strict_slashes=False)
 def states_list_html():
     ''' Print all states '''
+    storage.reload()
     state_objs = storage.all(eval('State'))
     state_values = []
 
@@ -80,4 +81,4 @@ def session_closer(session):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8000)
