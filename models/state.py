@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
+from os import environ
 import models
 
 
@@ -12,19 +13,20 @@ class State(BaseModel, Base):
         name: input name
     """
 
-    cities = relationship("City", backref="state",
-                          cascade="all, delete, delete-orphan")
     name = Column(String(128), nullable=False)
     __tablename__ = 'states'
 
-    @property
-    def cities(self):
-        """
-        returns City's with same State.id
-        """
-        list_city = []
+    if 'HBNB_TYPE_STORAGE' in environ and environ['HBNB_TYPE_STORAGE'] == 'db':
+        cities = relationship('City', cascade="all, delete-orphan",
+                              backref="state")
+    else:
+        @property
+        def cities(self):
+            stat = self.id
+            lis = []
 
-        for city in models.storage.all(models.City).filter(self.id).all():
-            list_city.append(city)
+            for k, v in models.storage.all().items():
+                if "City" in k and v.state_id == self.id:
+                    lis.append(v)
 
-        return list_city
+            return lis

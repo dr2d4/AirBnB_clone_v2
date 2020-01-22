@@ -131,7 +131,12 @@ class HBNBCommand(cmd.Cmd):
         Exceptions:
             NameError: when there is no object taht has the name
         """
-        objects = storage.all(self.all_classes)
+        objects = {}
+
+        for x_class in self.all_classes:
+            for key, obj in storage.all(eval(x_class)).items():
+                objects[key] = obj
+
         my_list = []
         if not line:
             for key in objects:
