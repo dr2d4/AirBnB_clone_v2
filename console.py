@@ -131,6 +131,7 @@ class HBNBCommand(cmd.Cmd):
         Exceptions:
             NameError: when there is no object taht has the name
         """
+        self.all_classes.remove('BaseModel')
         objects = {}
 
         for x_class in self.all_classes:
