@@ -45,7 +45,8 @@ class DBStorage:
 
         for x in self.__session.query(eval(x_class)).all():
             obj_type = x.__class__.__name__
-            if obj_type == cls:
+
+            if obj_type == x_class:
                 objs[obj_type + '.' + x.id] = x
 
         return objs
