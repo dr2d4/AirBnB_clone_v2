@@ -38,13 +38,21 @@ class DBStorage:
         """ return all objects of one or more tables """
         objs = {}
 
-        if cls:
-            cls.remove('BaseModel')
+        if not isinstance(cls, str):
+            try:
+                if cls:
+                    cls.remove('BaseModel')
+            except:
+                pass
 
-        for table in cls:
-            for obj in self.__session.query(eval(table)).all():
-                key = obj.__class__.__name__ + '.' + obj.id
-                objs[key] = obj
+            for table in cls:
+                for obj in self.__session.query(eval(table)).all():
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    objs[key] = obj
+        else:
+            for x in self.__session.query(eval(cls)).all():
+                if x.__class__.__name__ == cls:
+                    objs[x.__class__.__name__ + '.' + x.id] = x
 
         return objs
 
@@ -69,6 +77,6 @@ class DBStorage:
         session = scoped_session(session)
         self.__session = session()
 
-    def close(self):
+    def remove(self):
         """ close session """
         self.__session.close()
