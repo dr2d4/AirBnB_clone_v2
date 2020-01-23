@@ -38,7 +38,6 @@ class FileStorage:
             for key, value in self.__objects.items():
                 if cls.__name__ in key:
                     dic[key] = value
-                    return dic
 
         return self.__objects
 
